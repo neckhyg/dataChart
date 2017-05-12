@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Highcharts Example</title>
+
+    <script type="text/javascript" src="https://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+    <style type="text/css">
+        #container {
+            min-width: 320px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<script src="https://cdn.hcharts.cn/highcharts/5.0.9/highcharts.js"></script>
+<script src="https://cdn.hcharts.cn/highcharts/5.0.9/highcharts-more.js"></script>
+<script src="https://cdn.hcharts.cn/highcharts/5.0.9/modules/exporting.js"></script>
+
+<div id="container"></div>
+<button id="plain">柱状图</button>
+<button id="inverted">饼状图</button>
+<button id="polar">线性图</button>
+
+
+<script type="text/javascript">
+
+    var chart = Highcharts.chart('container', {
+
+        title: {
+            text: '历年招生人数'
+        },
+
+        subtitle: {
+            text: 'Plain'
+        },
+
+        xAxis: {
+            categories: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+        },
+
+        series: [{
+            type: 'column',
+            colorByPoint: true,
+            data: [2407, 2318, 2508, 2598, 2676, 2679, 2374, 101],
+            showInLegend: false
+        }]
+
+    });
+
+
+    $('#plain').click(function () {
+        chart.update({
+//            chart: {
+//                inverted: false,
+//                polar: false
+//            },
+            subtitle: {
+                text: 'Plain'
+            } ,
+            xAxis: {
+                categories: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+            },
+
+            series: [{
+                type: 'column',
+                colorByPoint: true,
+                data: [2407, 2318, 2508, 2598, 2676, 2679, 2374, 101],
+                showInLegend: false
+            }]
+        });
+    });
+
+    $('#inverted').click(function () {
+        chart.update({
+//            chart: {
+//                inverted: true,
+//                polar: false
+//            },
+            subtitle: {
+                text: 'Inverted'
+            }  ,
+
+//            xAxis: {
+//                categories: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+//            },
+
+            series: [{
+                type: 'pie',
+                colorByPoint: true,
+                data: [{name:'2010',y:2407}, {name:'2011',y:2318},{name:'2012',y:2508} , {name:'2013',y:2598}, {name:'2014',y:2676},
+                    {name:'2015',y:2679},  {name:'2016',y:2374}, {name:'2016',y:101}],
+                showInLegend: false
+            }]
+        });
+    });
+
+    $('#polar').click(function () {
+        chart.update({
+//            chart: {
+//                inverted: false,
+//                polar: true
+//            },
+            subtitle: {
+                text: 'Polar'
+            } ,
+            xAxis: {
+                categories: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+            },
+
+            series: [{
+                type: 'spline',
+                colorByPoint: true,
+                data: [2407, 2318, 2508, 2598, 2676, 2679, 2374, 101],
+                showInLegend: false
+            }]
+        });
+    });
+
+</script>
+</body>
+</html>
