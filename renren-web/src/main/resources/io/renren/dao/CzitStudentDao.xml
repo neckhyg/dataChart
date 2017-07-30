@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.CzitStudentDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.entity.CzitStudentEntity" id="czitStudentMap">
+        <result property="id" column="id"/>
+        <result property="studentCode" column="Student_Code"/>
+        <result property="studentName" column="Student_Name"/>
+        <result property="iscontactperson" column="isContactPerson"/>
+        <result property="studentType" column="Student_Type"/>
+        <result property="studentIdcard" column="Student_IDCard"/>
+        <result property="studentPhone" column="Student_Phone"/>
+        <result property="studentCompany" column="Student_Company"/>
+        <result property="studentEmail" column="Student_Email"/>
+        <result property="studentPost" column="Student_Post"/>
+        <result property="studentProv" column="Student_Prov"/>
+        <result property="studentCity" column="Student_City"/>
+        <result property="studentDist" column="Student_Dist"/>
+        <result property="studentTraingincharge" column="Student_TrainginCharge"/>
+        <result property="studentHotelcharge" column="Student_HotelCharge"/>
+        <result property="studentTravelstation" column="Student_TravelStation"/>
+        <result property="studentTraveldatetime" column="Student_TravelDateTime"/>
+        <result property="studentTravelno" column="Student_TravelNO"/>
+        <result property="studentLeavedatetime" column="Student_LeaveDateTime"/>
+        <result property="studentPaystate" column="Student_PayState"/>
+        <result property="trainingId" column="Training_Id"/>
+        <result property="trainingName" column="Training_Name"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.CzitStudentEntity">
+		select * from czit_student where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.CzitStudentEntity">
+		select * from czit_student
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from czit_student 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.CzitStudentEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into czit_student
+		(
+			`Student_Code`, 
+			`Student_Name`, 
+			`isContactPerson`, 
+			`Student_Type`, 
+			`Student_IDCard`, 
+			`Student_Phone`, 
+			`Student_Company`, 
+			`Student_Email`, 
+			`Student_Post`, 
+			`Student_Prov`, 
+			`Student_City`, 
+			`Student_Dist`, 
+			`Student_TrainginCharge`, 
+			`Student_HotelCharge`, 
+			`Student_TravelStation`, 
+			`Student_TravelDateTime`, 
+			`Student_TravelNO`, 
+			`Student_LeaveDateTime`, 
+			`Student_PayState`, 
+			`Training_Id`, 
+			`Training_Name`
+		)
+		values
+		(
+			#{studentCode}, 
+			#{studentName}, 
+			#{iscontactperson}, 
+			#{studentType}, 
+			#{studentIdcard}, 
+			#{studentPhone}, 
+			#{studentCompany}, 
+			#{studentEmail}, 
+			#{studentPost}, 
+			#{studentProv}, 
+			#{studentCity}, 
+			#{studentDist}, 
+			#{studentTraingincharge}, 
+			#{studentHotelcharge}, 
+			#{studentTravelstation}, 
+			#{studentTraveldatetime}, 
+			#{studentTravelno}, 
+			#{studentLeavedatetime}, 
+			#{studentPaystate}, 
+			#{trainingId}, 
+			#{trainingName}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.CzitStudentEntity">
+		update czit_student 
+		<set>
+			<if test="studentCode != null">`Student_Code` = #{studentCode}, </if>
+			<if test="studentName != null">`Student_Name` = #{studentName}, </if>
+			<if test="iscontactperson != null">`isContactPerson` = #{iscontactperson}, </if>
+			<if test="studentType != null">`Student_Type` = #{studentType}, </if>
+			<if test="studentIdcard != null">`Student_IDCard` = #{studentIdcard}, </if>
+			<if test="studentPhone != null">`Student_Phone` = #{studentPhone}, </if>
+			<if test="studentCompany != null">`Student_Company` = #{studentCompany}, </if>
+			<if test="studentEmail != null">`Student_Email` = #{studentEmail}, </if>
+			<if test="studentPost != null">`Student_Post` = #{studentPost}, </if>
+			<if test="studentProv != null">`Student_Prov` = #{studentProv}, </if>
+			<if test="studentCity != null">`Student_City` = #{studentCity}, </if>
+			<if test="studentDist != null">`Student_Dist` = #{studentDist}, </if>
+			<if test="studentTraingincharge != null">`Student_TrainginCharge` = #{studentTraingincharge}, </if>
+			<if test="studentHotelcharge != null">`Student_HotelCharge` = #{studentHotelcharge}, </if>
+			<if test="studentTravelstation != null">`Student_TravelStation` = #{studentTravelstation}, </if>
+			<if test="studentTraveldatetime != null">`Student_TravelDateTime` = #{studentTraveldatetime}, </if>
+			<if test="studentTravelno != null">`Student_TravelNO` = #{studentTravelno}, </if>
+			<if test="studentLeavedatetime != null">`Student_LeaveDateTime` = #{studentLeavedatetime}, </if>
+			<if test="studentPaystate != null">`Student_PayState` = #{studentPaystate}, </if>
+			<if test="trainingId != null">`Training_Id` = #{trainingId}, </if>
+			<if test="trainingName != null">`Training_Name` = #{trainingName}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from czit_student where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from czit_student where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -3,9 +3,13 @@ package io.renren.controller;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.renren.entity.SysUserEntity;
+import io.renren.service.SysUserService;
 import io.renren.utils.R;
 import io.renren.utils.ShiroUtils;
+import io.renren.validator.ValidatorUtils;
+import io.renren.validator.group.AddGroup;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 登录相关
@@ -32,7 +38,9 @@ import java.io.IOException;
 public class SysLoginController {
 	@Autowired
 	private Producer producer;
-	
+    @Autowired
+    private SysUserService sysUserService;
+
 	@RequestMapping("captcha.jpg")
 	public void captcha(HttpServletResponse response)throws ServletException, IOException {
         response.setHeader("Cache-Control", "no-store, no-cache");
@@ -89,7 +97,29 @@ public class SysLoginController {
 //		return R.ok();
 //        return R.ok().put("userId", userId);
 	}
-	
+
+    /**
+     * 注册
+     */
+    @ResponseBody
+    @RequestMapping(value = "/sys/register", method = RequestMethod.POST)
+    public R register(String username, String password, String mobile ,String email)throws IOException{
+        SysUserEntity user = new SysUserEntity();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setMobile(mobile);
+        user.setEmail(email);
+        user.setStatus(1);
+         List<Long> roleIdList  = new ArrayList<Long>();
+        Long  roleId    =  new Long(1);
+        roleIdList.add(roleId);
+        user.setRoleIdList(roleIdList);
+        ValidatorUtils.validateEntity(user, AddGroup.class);
+         user.setCreateUserId(roleId);
+        sysUserService.save(user) ;
+       R  r  = R.ok("注册成功!") ;
+        return r;
+    }
 	/**
 	 * 退出
 	 */

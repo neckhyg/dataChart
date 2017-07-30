@@ -15,6 +15,7 @@
 			<artifactId>renren-common</artifactId>
 			<version>${renren-version}</version>
 		</dependency>
+
 	</dependencies>
 
 </project>

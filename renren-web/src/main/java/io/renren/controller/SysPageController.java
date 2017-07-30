@@ -23,4 +23,8 @@ public class SysPageController {
 	public String generator(@PathVariable("url") String url){
 		return "generator/" + url + ".html";
 	}
+    @RequestMapping("meeting/{url}.html")
+    public String meeting(@PathVariable("url") String url){
+        return "meeting/" + url + ".html";
+    }
 }

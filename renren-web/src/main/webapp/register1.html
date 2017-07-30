@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title></title>
+    <!--报名
+   #include("sys/header.html")
+
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link href="./czit/Content/jquery-ui-1.8.css" rel="stylesheet"  />
+<link href="./czit/Content/jquery-ui-all.css" rel="stylesheet" />
+<link href="./czit/Content/ui.jqgrid.css" rel="stylesheet"  />
+<link href="./czit/Content/jquery-ui-1.8.16.custom.css" rel="stylesheet"  />
+<link  href="./czit/Content/jquery.mobile-1.1.2.min.css"  rel="stylesheet" />
+
+<script src="./czit/Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="./czit/Scripts/jquery.mobile-1.1.2.min.js" type="text/javascript"></script>
+<script src="./czit/Scripts/jquery.validate.js" type="text/javascript" > </script>
+<script src="./czit/Scripts/jquery.validate.message_cn.js" type="text/javascript" > </script>
+<script src="statics/libs/vue.min.js"></script>
+-->
+<link rel="stylesheet" href="${rc.contextPath}/statics/css/bootstrap.min.css">
+<link rel="stylesheet" href="${rc.contextPath}/statics/css/font-awesome.min.css">
+<link rel="stylesheet" href="${rc.contextPath}/statics/plugins/jqgrid/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" href="${rc.contextPath}/statics/plugins/ztree/css/metroStyle/metroStyle.css">
+<link rel="stylesheet" href="${rc.contextPath}/statics/css/main.css">
+<script src="${rc.contextPath}/statics/libs/jquery.min.js"></script>
+<script src="${rc.contextPath}/statics/plugins/layer/layer.js"></script>
+<script src="${rc.contextPath}/statics/libs/bootstrap.min.js"></script>
+<script src="${rc.contextPath}/statics/libs/vue.min.js"></script>
+<script src="${rc.contextPath}/statics/plugins/jqgrid/grid.locale-cn.js"></script>
+<script src="${rc.contextPath}/statics/plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="${rc.contextPath}/statics/plugins/ztree/jquery.ztree.all.min.js"></script>
+<script src="${rc.contextPath}/js/common.js"></script>
+
+</head>
+<body>
+<div id="rrapp" >
+
+    
+    <div  class="panel panel-default">
+		<div class="panel-heading"><h3>培训报名</h3></div>
+		<form class="form-horizontal">
+											<div class="form-group">
+			   	<div class="col-sm-2 control-label"></div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="ybm.ksname" placeholder="考生姓名"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label"></div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="ybm.ksid" placeholder="身份证号"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label"></div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="ybm.kszkz" placeholder="准考证号"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label"></div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="ybm.ksksh" placeholder="考生号"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label"></div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="ybm.gkgrade" placeholder="高考分数"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label"></div>
+			   	<div class="col-sm-10">
+                       <!--报名
+                     <input type="text" class="form-control" v-model="ybm.ksmajor" placeholder=""/>
+                     -->
+                          <div  class="form-control"  ><select v-model="ybm.ksMajor" id="ksMajor">
+                              <option value="sk" >选择专业</option>
+                              <option value="sk" >数控技术</option>
+                              <option value="dz" >电子信息</option>
+                              <option value="fz" >服装设计</option>
+                              <option value="tc" >陶瓷艺术</option>
+                          </select></div>
+                   </div>
+
+               </div>
+                                       <div class="form-group">
+                      <div class="col-sm-2 control-label"></div>
+                      <div class="col-sm-10">
+                     <input type="text" class="form-control" v-model="ybm.kslesson" placeholder="选测科目"/>
+                   </div>
+               </div>
+                                       <div class="form-group">
+                      <div class="col-sm-2 control-label"></div>
+                      <div class="col-sm-10">
+                     <input type="text" class="form-control" v-model="ybm.ksschool" placeholder="就读高中"/>
+                   </div>
+               </div>
+                                       <div class="form-group">
+                      <div class="col-sm-2 control-label"></div>
+                      <div class="col-sm-10">
+                     <input type="text" class="form-control" v-model="ybm.ksmobile" placeholder="您的手机"/>
+                   </div>
+               </div>
+                               <div class="form-group">
+                   <div class="col-sm-2 control-label"></div>
+                   <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+                   &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+               </div>
+           </form>
+       </div>
+   </div>
+
+
+<script src="${rc.contextPath}/js/generator/ybm.js?_${date.systemTime}"></script>
+
+
+
+   </body>
+   </html>

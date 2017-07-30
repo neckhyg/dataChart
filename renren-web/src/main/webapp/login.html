@@ -50,17 +50,24 @@
       
       
       <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-          </div>
-        </div>
+        <!--<div class="col-xs-8">-->
+          <!--<div class="checkbox icheck">-->
+          <!--</div>-->
+        <!--</div>-->
         <!-- /.col -->
-        <div class="col-xs-4">
+
           <button type="button" class="btn btn-primary btn-block btn-flat" @click="login">登录</button>
-        </div>
+            <button type="button" class="btn btn-primary btn-block btn-flat" @click="register">注册</button>
+          <div class=" btn-group "> </div>
         <!-- /.col -->
-      </div>
-    <!-- /.social-auth-links -->
+          <div class="col-xs-4">
+
+
+              <!--
+               <a href="test.jsp">  &nbsp;注册</a>   -->
+           </div>
+       </div>
+     <!-- /.social-auth-links -->
 
   </div>
   <!-- /.login-box-body -->
@@ -100,15 +107,14 @@ var vm = new Vue({
 			    data: data,
 			    dataType: "json",
 			    success: function(result){
-					if(result.code == 0){//登录成功
-						parent.location.href ='index.html';
-					}
-                /*    if(result.msg == "admin"){//登录成功
+//					if(result.code == 0){//登录成功
+//						parent.location.href ='index.html';
+//					}
+                    if(result.msg == "admin"){//登录成功
                         parent.location.href ='index.html';
                     }  else if(result.msg == "user"){
-                        parent.location.href ='test.jsp';
+                        parent.location.href ='meeting/czittest.html';
                     }
-            */
                     else{
 						vm.error = true;
 						vm.errorMsg = result.msg;
@@ -117,7 +123,11 @@ var vm = new Vue({
 					}
 				}
 			});
-		}
+		} ,
+        register: function (event) {
+
+            parent.location.href ='register.html';
+        }
 	}
 });
 </script>

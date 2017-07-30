@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.CzitQuestionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.entity.CzitQuestionEntity" id="czitQuestionMap">
+        <result property="id" column="id"/>
+        <result property="trainingId" column="Training_Id"/>
+        <result property="questionTitle" column="Question_Title"/>
+        <result property="questionContent" column="Question_Content"/>
+        <result property="questionCreatorid" column="Question_CreatorID"/>
+        <result property="questionCreatorname" column="Question_CreatorName"/>
+        <result property="questionCreatorcompany" column="Question_CreatorCompany"/>
+        <result property="questionCreatetime" column="Question_CreateTime"/>
+        <result property="questionReplyquantity" column="Question_ReplyQuantity"/>
+        <result property="questionId" column="Question_Id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.CzitQuestionEntity">
+		select * from czit_question where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.CzitQuestionEntity">
+		select * from czit_question
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from czit_question 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.CzitQuestionEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into czit_question
+		(
+			`Training_Id`, 
+			`Question_Title`, 
+			`Question_Content`, 
+			`Question_CreatorID`, 
+			`Question_CreatorName`, 
+			`Question_CreatorCompany`, 
+			`Question_CreateTime`, 
+			`Question_ReplyQuantity`, 
+			`Question_Id`
+		)
+		values
+		(
+			#{trainingId}, 
+			#{questionTitle}, 
+			#{questionContent}, 
+			#{questionCreatorid}, 
+			#{questionCreatorname}, 
+			#{questionCreatorcompany}, 
+			#{questionCreatetime}, 
+			#{questionReplyquantity}, 
+			#{questionId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.CzitQuestionEntity">
+		update czit_question 
+		<set>
+			<if test="trainingId != null">`Training_Id` = #{trainingId}, </if>
+			<if test="questionTitle != null">`Question_Title` = #{questionTitle}, </if>
+			<if test="questionContent != null">`Question_Content` = #{questionContent}, </if>
+			<if test="questionCreatorid != null">`Question_CreatorID` = #{questionCreatorid}, </if>
+			<if test="questionCreatorname != null">`Question_CreatorName` = #{questionCreatorname}, </if>
+			<if test="questionCreatorcompany != null">`Question_CreatorCompany` = #{questionCreatorcompany}, </if>
+			<if test="questionCreatetime != null">`Question_CreateTime` = #{questionCreatetime}, </if>
+			<if test="questionReplyquantity != null">`Question_ReplyQuantity` = #{questionReplyquantity}, </if>
+			<if test="questionId != null">`Question_Id` = #{questionId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from czit_question where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from czit_question where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

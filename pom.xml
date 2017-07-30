@@ -12,7 +12,14 @@
 		<module>renren-schedule</module> <!-- 定时任务模块 -->
 		<module>renren-gen</module> <!-- 代码生成器模块 -->
 		<module>renren-api</module> <!-- API模块 -->
-		<module>renren-web</module> <!-- 管理后台模块 -->
+        <!-- 管理后台模块         -->
+   <module>renren-web</module>
+
+      <!-- 管理后台模块 -->
+        <!--
+        <module>meeting</module>
+        -->
+
 	</modules>
 
 	<properties>
@@ -296,7 +303,7 @@
 				<configuration>
 					<path>/</path>
 					<charset>UTF-8</charset>
-					<port>18090</port>
+					<port>8090</port>
 					<uriEncoding>UTF-8</uriEncoding>
 				</configuration>
 			</plugin>

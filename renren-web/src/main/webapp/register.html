@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>人人权限系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="statics/css/bootstrap.min.css">
+    <link rel="stylesheet" href="statics/css/font-awesome.min.css">
+    <link rel="stylesheet" href="statics/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="statics/css/all-skins.min.css">
+    <link rel="stylesheet" href="statics/css/main.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition login-page">
+<div class="login-box" id="rrapp" v-cloak>
+    <div class="login-logo">
+        <b>培训注册</b>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">学员注册</p>
+        <div v-if="error" class="alert alert-danger alert-dismissible">
+            <h4 style="margin-bottom: 0px;"><i class="fa fa-exclamation-triangle"></i> {{errorMsg}}</h4>
+        </div>
+        <!-- /.social-auth-links
+        <div class="form-group ">
+            <input type="text" class="form-control" v-model="ksid" placeholder="身份证号">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+         -->
+        <div class="form-group">
+            <input type="text" class="form-control" v-model="ksName" placeholder="姓名">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+            <input type="password" class="form-control" v-model="password" placeholder="密码">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label"></div>
+                <input type="text" class="form-control" v-model="kszkz" placeholder="准考证号"/>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label"></div>
+                <input type="text" class="form-control" v-model="ksksh" placeholder="考生号"/>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label"></div>
+            <input type="text" class="form-control" v-model="email" placeholder="邮箱"/>
+        </div>
+        <!-- /.col
+        <div class="form-group">
+            <div class="col-sm-2 control-label"></div>
+                    <select id="ksMajor" v-model="ksMajor"  placeholder="" class=" show-tick selectpicker form-control" >
+                    <option value="sk" >选择专业</option>
+                    <option value="sk" >数控技术</option>
+                    <option value="dz" >电子信息</option>
+                    <option value="fz" >服装设计</option>
+                    <option value="tc" >陶瓷艺术</option>
+                </select>
+        </div>     -->
+        <div class="form-group">
+            <div class="col-sm-2 control-label"></div>
+                <input type="text" class="form-control" v-model="ksmobile" placeholder="您的手机"/>
+        </div>
+
+        <div class="row">
+                <button type="button" class="btn btn-primary btn-block btn-flat" @click="register">提交</button>
+            <div class="col-xs-4"></div>
+
+        </div>
+        <!-- /.social-auth-links -->
+
+    </div>
+
+</div>
+<!-- /.login-box -->
+<script src="statics/libs/jquery.min.js"></script>
+<script src="statics/libs/vue.min.js"></script>
+<script src="statics/libs/bootstrap.min.js"></script>
+<script src="statics/libs/jquery.slimscroll.min.js"></script>
+<script src="statics/libs/fastclick.min.js"></script>
+<script src="statics/libs/app.js"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+        el:'#rrapp',
+        data:{
+            ksName: '',
+            password: '',
+            ksid : '',
+            kszkz: '',
+            ksksh: '',
+            ksMajor: '',
+             ksmobile: '',
+            email : '',
+            error: false,
+            errorMsg: ''
+
+        },
+        methods: {
+
+            register: function (event) {
+              //  parent.location.href ='register.html';
+            //    alert("注册成功");
+            var data = "username="+vm.ksName+"&password="+vm.password+"&mobile="+vm.ksmobile+"&email="+vm.email;
+          	var url =  "sys/register" ;
+			$.ajax({
+				type: "POST",
+			    url: url,
+			    data: data,
+             //   async : false,
+                dataType: "json",
+			    success: function(result){
+			    	if(result.code == 0){
+					//	alert('操作成功', function(index){
+							//vm.reload();
+                        alert(result.msg);
+                            parent.location.href ='login.html';
+					//	});
+                   //     alert('操作成功');
+					}else{
+						alert(result.msg);
+					}
+				}
+			});
+            }
+        }
+    });
+</script>
+</body>
+</html>
