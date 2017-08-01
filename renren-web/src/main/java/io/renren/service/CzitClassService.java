@@ -27,4 +27,6 @@ public interface CzitClassService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+
+    CzitClassEntity queryObject(String Training_Code);
 }

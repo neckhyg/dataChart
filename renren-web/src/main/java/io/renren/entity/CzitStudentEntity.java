@@ -60,6 +60,8 @@ public class CzitStudentEntity implements Serializable {
 	//
 	private String trainingName;
 
+    private CzitClassEntity   trainingClass;
+
 	/**
 	 * 设置：
 	 */
@@ -324,4 +326,12 @@ public class CzitStudentEntity implements Serializable {
 	public String getTrainingName() {
 		return trainingName;
 	}
+
+    public CzitClassEntity getTrainingClass() {
+        return trainingClass;
+    }
+
+    public void setTrainingClass(CzitClassEntity trainingClass) {
+        this.trainingClass = trainingClass;
+    }
 }

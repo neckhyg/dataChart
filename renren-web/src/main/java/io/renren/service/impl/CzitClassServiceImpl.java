@@ -49,5 +49,11 @@ public class CzitClassServiceImpl implements CzitClassService {
 	public void deleteBatch(Integer[] ids){
 		czitClassDao.deleteBatch(ids);
 	}
-	
+
+    @Override
+    public CzitClassEntity queryObject(String Training_Code) {
+
+     //   czitClassDao.queryObject(id)
+        return czitClassDao.queryObjectByCode(Training_Code);  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

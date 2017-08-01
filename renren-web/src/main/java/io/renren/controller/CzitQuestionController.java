@@ -1,21 +1,16 @@
 package io.renren.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import io.renren.entity.CzitQuestionEntity;
 import io.renren.service.CzitQuestionService;
 import io.renren.utils.PageUtils;
 import io.renren.utils.Query;
 import io.renren.utils.R;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -47,7 +42,19 @@ public class CzitQuestionController {
 		
 		return R.ok().put("page", pageUtil);
 	}
-	
+    @RequestMapping("/list2")
+   // @RequiresPermissions("czitquestion:list")
+    public R list2(@RequestParam Map<String, Object> params){
+        //查询列表数据
+      //  Query query = new Query(params);
+
+        List<CzitQuestionEntity> czitQuestionList = czitQuestionService.queryList(params);
+//        int total = czitQuestionService.queryTotal(query);
+
+//        PageUtils pageUtil = new PageUtils(czitQuestionList, total, query.getLimit(), query.getPage());
+
+        return R.ok().put("data", czitQuestionList);
+    }
 	
 	/**
 	 * 信息

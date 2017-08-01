@@ -104,5 +104,7 @@
 			#{id}
 		</foreach>
 	</delete>
-
+    <select id="queryObjectByCode" resultType="io.renren.entity.CzitClassEntity">
+		select * from czit_class where Training_Id = #{value}
+	</select>
 </mapper>

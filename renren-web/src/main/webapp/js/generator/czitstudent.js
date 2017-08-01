@@ -24,7 +24,7 @@ $(function () {
 		//	{ label: '', name: 'studentLeavedatetime', index: 'Student_LeaveDateTime', width: 80 },
 			{ label: '付费情况', name: 'studentPaystate', index: 'Student_PayState', width: 80 },
 		//	{ label: '', name: 'trainingId', index: 'Training_Id', width: 80 },
-			{ label: '培训班级', name: 'trainingName', index: 'Training_Name', width: 80 }
+			{ label: '培训班级', name: 'trainingClass.trainingName', index: 'Training_Name', width: 80 }
         ],
 		viewrecords: true,
         height: 385,

@@ -1,21 +1,18 @@
 package io.renren.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import io.renren.entity.CzitClassEntity;
 import io.renren.entity.CzitStudentEntity;
+import io.renren.service.CzitClassService;
 import io.renren.service.CzitStudentService;
 import io.renren.utils.PageUtils;
 import io.renren.utils.Query;
 import io.renren.utils.R;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -30,25 +27,45 @@ import io.renren.utils.R;
 public class CzitStudentController {
 	@Autowired
 	private CzitStudentService czitStudentService;
+    @Autowired
+    private CzitClassService czitClassService;
 	
 	/**
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	@RequiresPermissions("czitstudent:list")
+//	@RequiresPermissions("czitstudent:list")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
-
 		List<CzitStudentEntity> czitStudentList = czitStudentService.queryList(query);
 		int total = czitStudentService.queryTotal(query);
-		
-		PageUtils pageUtil = new PageUtils(czitStudentList, total, query.getLimit(), query.getPage());
+
+        for ( int i = 0 ; i<total; i ++){
+            CzitStudentEntity czitStudent = czitStudentList.get(i);
+            CzitClassEntity czitClass = czitClassService.queryObject(czitStudent.getTrainingId());
+            czitStudentList.get(i).setTrainingClass(czitClass);
+        }
+        PageUtils pageUtil = new PageUtils(czitStudentList, total, query.getLimit(), query.getPage());
 		
 		return R.ok().put("page", pageUtil);
 	}
-	
-	
+    @RequestMapping("/list2")
+    public R list2(@RequestParam Map<String, Object> params){
+        //查询列表数据
+    //    Query query = new Query(params);
+        List<CzitStudentEntity> czitStudentList = czitStudentService.queryList(params);
+        int total = czitStudentService.queryTotal(params);
+
+        for ( int i = 0 ; i<total; i ++){
+            CzitStudentEntity czitStudent = czitStudentList.get(i);
+            CzitClassEntity czitClass = czitClassService.queryObject(czitStudent.getTrainingId());
+            czitStudentList.get(i).setTrainingClass(czitClass);
+        }
+//        PageUtils pageUtil = new PageUtils(czitStudentList, total, query.getLimit(), query.getPage());
+
+        return R.ok().put("data", czitStudentList);
+    }
 	/**
 	 * 信息
 	 */

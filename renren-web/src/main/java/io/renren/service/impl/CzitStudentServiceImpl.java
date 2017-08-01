@@ -1,14 +1,15 @@
 package io.renren.service.impl;
 
+import io.renren.dao.CzitClassDao;
+import io.renren.dao.CzitStudentDao;
+import io.renren.entity.CzitClassEntity;
+import io.renren.entity.CzitStudentEntity;
+import io.renren.service.CzitStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-
-import io.renren.dao.CzitStudentDao;
-import io.renren.entity.CzitStudentEntity;
-import io.renren.service.CzitStudentService;
 
 
 
@@ -16,7 +17,9 @@ import io.renren.service.CzitStudentService;
 public class CzitStudentServiceImpl implements CzitStudentService {
 	@Autowired
 	private CzitStudentDao czitStudentDao;
-	
+//    @Autowired
+//    private CzitClassDao czitClassDao ;
+
 	@Override
 	public CzitStudentEntity queryObject(Integer id){
 		return czitStudentDao.queryObject(id);
@@ -24,7 +27,20 @@ public class CzitStudentServiceImpl implements CzitStudentService {
 	
 	@Override
 	public List<CzitStudentEntity> queryList(Map<String, Object> map){
-		return czitStudentDao.queryList(map);
+//        List<CzitStudentEntity> list =  czitStudentDao.queryList(map);
+//
+//        if( list != null){
+//
+//            CzitStudentEntity czitStudent = list.get(0);
+//
+//            CzitClassEntity czitClass = czitClassDao.(czitStudent.getTrainingId());
+//            list.get(0).setTrainingClass(czitClass);
+//
+//
+//        }
+//		return list;//czitStudentDao.queryList(map);
+
+        return czitStudentDao.queryList(map);
 	}
 	
 	@Override

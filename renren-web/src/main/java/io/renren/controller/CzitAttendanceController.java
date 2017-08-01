@@ -42,7 +42,19 @@ public class CzitAttendanceController {
 		
 		return R.ok().put("page", pageUtil);
 	}
-	
+    @RequestMapping("/list2")
+    //@RequiresPermissions("czitattendance:list")
+    public R list2(@RequestParam Map<String, Object> params){
+        //查询列表数据
+    //    Query query = new Query(params);
+
+        List<CzitAttendanceEntity> czitAttendanceList = czitAttendanceService.queryList(params);
+//        int total = czitAttendanceService.queryTotal(query);
+//
+//        PageUtils pageUtil = new PageUtils(czitAttendanceList, total, query.getLimit(), query.getPage());
+
+        return R.ok().put("data", czitAttendanceList);
+    }
 	
 	/**
 	 * 信息
