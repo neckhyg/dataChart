@@ -27,4 +27,6 @@ public interface CzitStudentService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+
+    CzitStudentEntity queryObjectByidCard(String  idCard);
 }

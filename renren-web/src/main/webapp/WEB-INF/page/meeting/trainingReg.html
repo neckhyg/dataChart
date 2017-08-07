@@ -217,8 +217,8 @@
                 $('#tab2').html(htm);
       //      });
 
-           loadAttendance(DataList[index].training_Id);
-            loadQuestion(DataList[index].training_Id, 1);
+           loadAttendance(DataList[index].trainingId);
+            loadQuestion(DataList[index].trainingId, 1);
 
             $('#tabList a[href="#tab' + tabIndex.toString() + '"]').tab('show');
 
@@ -574,21 +574,35 @@
         }
 
         function saveQuestion(btn) {
-            var parm = {};
-            parm.action = 'RegList_Question_Save';
-            parm.training = $(btn).attr('data-training');
-            parm.card = $(btn).attr('data-card');
-            parm.title = $('#txtQuestionTitle').val();
-            $.post("./saveQuestion", {training: parm.training,card:parm.card,title:parm.title}, function (data) {
-                PostMessage.showPostMessage(data,
+//            var parm = {};
+//            parm.action = 'RegList_Question_Save';
+//            parm.training = $(btn).attr('data-training');
+//            parm.card = $(btn).attr('data-card');
+//            parm.title = $('#txtQuestionTitle').val();
+            //            var parm = {};
+        //    parm.action = 'RegList_Question_Save';
+            training = $(btn).attr('data-training');
+            card = $(btn).attr('data-card');
+            title = $('#txtQuestionTitle').val();
+            var data = "training="+training+"&card="+card+"&title="+title;
+            $.ajax({
+                type: "POST",
+                url:  '../czitquestion/save2',
+          //      data: {training: parm.training,card:parm.card,title:parm.title},
+                data: data,
+                success: function(r){
+        //    $.post("./save", {training: parm.training,card:parm.card,title:parm.title}, function (data) {
+                PostMessage.showPostMessage(r,
                 function (msg) {
                     alert(msg);
-                    loadQuestion(parm.training);
+                    loadQuestion(training);
                 },
                 function (err) {
                     alert(err);
-                    loadQuestion(parm.training);
+                    loadQuestion(training);
                 });
+                    loadQuestion(training);
+                }
             });
         }
 

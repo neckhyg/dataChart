@@ -14,10 +14,12 @@
 		<module>renren-api</module> <!-- API模块 -->
         <!-- 管理后台模块         -->
    <module>renren-web</module>
+        <module>simple-mail</module>
 
-      <!-- 管理后台模块 -->
+        <!-- 管理后台模块 -->
         <!--
         <module>meeting</module>
+
         -->
 
 	</modules>

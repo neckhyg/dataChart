@@ -156,39 +156,28 @@ var vm = new Vue({
 
         exportexcel: function (event) {
 
-//           confirm('确定要导出电子表？', function(){
-
                location.href="../sys/conference/export" ;
-//                $.ajax({
-//                    type: "POST",
-//                    url: "../sys/conference/export",
-//                   data: JSON.stringify(null),
-//                    success: function(r){
-//                        alert(r.code) ;
-//                        if(r.code == 0){
-//                            alert('操作成功', function(index){
-//                                $("#jqGrid").trigger("reloadGrid");
-//                            });
-//                        }else{
-//                            alert(r.msg);
-//                        }
-//                    }
-//                });
-//            });
+
         },
-//        exportexcel: function(event){
-//            confirm('确定要导出excel表？', function(){
-//            $.get("../sys/conference/export", function(r){
-//                                        if(r.code == 0){
-//                            alert('操作成功', function(index){
-//                                $("#jqGrid").trigger("reloadGrid");
-//                            });
-//                        }else{
-//                            alert(r.msg);
-//                        }
-//                });
-//            });
-//        },
+        excel2db: function (event) {
+
+//            location.href="../sys/conference/import" ;
+            var url  = "../sys/conference/import" ;
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: '',
+                success: function(r){
+                    if(r.code === 0){
+                        alert('导入数据成功', function(index){
+                            vm.reload();
+                        });
+                    }else{
+                        alert(r.msg);
+                    }
+                }
+            });
+        },
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');

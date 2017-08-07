@@ -141,5 +141,7 @@
 			#{id}
 		</foreach>
 	</delete>
-
+    <select id="queryObjectBySql" parameterType="String" resultType="io.renren.entity.CzitStudentEntity">
+		select * from czit_student   where  Student_IDCard = #{value}
+	</select>
 </mapper>

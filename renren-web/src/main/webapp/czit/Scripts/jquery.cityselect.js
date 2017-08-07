@@ -17,7 +17,7 @@ required:必选项
 
         // 默认值
         settings = $.extend({
-            url: "Scripts/city.min.js",
+            url: "./czit/Scripts/city.min.js",
             prov: null,
             city: null,
             dist: null,

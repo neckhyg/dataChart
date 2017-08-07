@@ -2,6 +2,8 @@ package io.renren.controller;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import com.nengkey.MailEntity;
+import com.nengkey.MailSystemService;
 import io.renren.entity.SysUserEntity;
 import io.renren.service.SysUserService;
 import io.renren.utils.R;
@@ -9,7 +11,6 @@ import io.renren.utils.ShiroUtils;
 import io.renren.validator.ValidatorUtils;
 import io.renren.validator.group.AddGroup;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,8 +118,32 @@ public class SysLoginController {
         ValidatorUtils.validateEntity(user, AddGroup.class);
          user.setCreateUserId(roleId);
         sysUserService.save(user) ;
-       R  r  = R.ok("注册成功!") ;
-        return r;
+//         R  r;
+//        if(sendMail(user)  == true ){
+//            r = R.ok("注册成功!") ;
+//
+//        }else{
+//        r  = R.ok("注册失败!") ;
+//        }
+//        return r;
+         return    sendMail(user);
+    }
+
+    private R sendMail(SysUserEntity user){
+
+        MailEntity mail = new MailEntity();
+        mail.setHost("smtp.exmail.qq.com");
+        mail.setSender("heyg@wxgyxy.cn");
+        mail.setUsername("何英高");
+//        mail.setPassword("220163");
+
+        mail.setReceiver(user.getEmail());
+
+        mail.setSubject("注册成功");
+        mail.setMessage("恭喜" + user.getUsername()+"报名成功！");
+
+        R  r = MailSystemService.Sendmail(mail);
+        return   r;
     }
 	/**
 	 * 退出

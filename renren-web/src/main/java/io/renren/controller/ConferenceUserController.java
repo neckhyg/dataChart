@@ -22,9 +22,9 @@ import simplemail.MailUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -424,4 +424,141 @@ public class ConferenceUserController {
 //           // logger.info("=====导出excel异常====");
 //        }
     }
+    @ResponseBody
+    @RequestMapping("/import")
+    @RequiresPermissions("sys:conference:import")
+    public R importExcel2Db()    throws IOException   {
+//        List temp = new ArrayList();
+    String   filename  = "F:\\temp\\excel2db.xls"  ;
+        List<ConferenceUserEntity> list =new ArrayList<ConferenceUserEntity>();
+        try{
+            File file=new File(filename);
+            FileInputStream fileIn = new FileInputStream(file);
+//根据指定的文件输入流导入Excel从而产生Workbook对象
+            HSSFWorkbook wb0 = new HSSFWorkbook(fileIn);
+
+//        HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(new File("F:/tt.xls")));
+//获取Excel文档中的第一个表单
+            HSSFSheet hssfSheet = wb0.getSheetAt(0);
+//对Sheet中的每一行进行迭代
+//        for (HSSFRow r : sht0) {
+            int totalRows = hssfSheet.getPhysicalNumberOfRows();
+            int    totalCells =0;
+            int  currentCol =0 ;
+            /** 得到Excel的列数 */
+            if (totalRows >= 1 && hssfSheet.getRow(0) != null) {
+                totalCells = hssfSheet.getRow(0).getPhysicalNumberOfCells();
+            }
+            for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++)  {
+                HSSFRow r = hssfSheet.getRow(rowNum);
+                if (r != null) {
+
+                    ConferenceUserEntity info=new ConferenceUserEntity();
+//取出当前行第1个单元格数据，并封装在info实体stuName属性上
+                    for (currentCol = 0; currentCol < totalCells; currentCol++) {
+                        HSSFCell cell = r.getCell(currentCol);
+                        String cellValue = "";
+                        if (null != cell) {
+                            // 以下是判断数据的类型
+                            switch (cell.getCellType()) {
+                                case HSSFCell.CELL_TYPE_NUMERIC: // 数字
+                                    cellValue = cell.getNumericCellValue() + "";
+                                    break;
+                                case HSSFCell.CELL_TYPE_STRING: // 字符串
+                                    cellValue = cell.getStringCellValue();
+                                    break;
+                                case HSSFCell.CELL_TYPE_BOOLEAN: // Boolean
+                                    cellValue = cell.getBooleanCellValue() + "";
+                                    break;
+                                case HSSFCell.CELL_TYPE_FORMULA: // 公式
+                                    cellValue = cell.getCellFormula() + "";
+                                    break;
+                                case HSSFCell.CELL_TYPE_BLANK: // 空值
+                                    cellValue = "";
+                                    break;
+                                case HSSFCell.CELL_TYPE_ERROR: // 故障
+                                    cellValue = "非法字符";
+                                    break;
+                                default:
+                                    cellValue = "未知类型";
+                                    break;
+                            }
+                        }
+                        switch(currentCol) {
+                             case 0:
+                                 info.setUserId(cellValue);
+                                 break;
+                            case 1:
+                                info.setUserName(cellValue);
+                                break;
+                            case 2:
+                                info.setSex(cellValue);
+                                break;
+                            case 3:
+                                info.setDepartment(cellValue);
+                                break;
+                            case 4:
+                                info.setPosition(cellValue);
+                                break;
+                            case 5:
+                                info.setMobile(cellValue);
+                                break;
+                            case 6:
+                                info.setEmail(cellValue);
+                                break;
+                            case 7:
+                                info.setRoom(cellValue);
+                                break;
+                            case 8:
+                                info.setTransport(cellValue);
+                                break;
+                            case 9:
+//                                info.setArriveDate(cellValue);
+                                break;
+                            case 10:
+                                info.setTestType(cellValue);
+                                break;
+
+                            default:
+                                break;
+                    }
+
+//                        info.setUserName(r.getCell(1).getStringCellValue());
+//                        info.setSex(r.getCell(2).getStringCellValue());
+//                        info.setDepartment(r.getCell(3).getStringCellValue());
+//                        info.setPosition(r.getCell(4).getStringCellValue());
+//                        info.setMobile(r.getCell(5).getStringCellValue());
+//                        info.setEmail(r.getCell(6).getStringCellValue());
+//                        info.setRoom(r.getCell(7).getStringCellValue());
+//                        info.setTransport(r.getCell(8).getStringCellValue());
+////            info.setArriveDate(r.getCell(9).getStringCellValue());
+//                        info.setTestType(r.getCell(10).getStringCellValue());
+
+
+                }
+                    list.add(info);
+            }
+         }
+        fileIn.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("未找到指定路径的文件!");
+//            e.printStackTrace();
+          return R.error("未找到指定路径的文件!");
+        }
+
+
+        for(int i=0;i<list.size();i++){
+
+            ConferenceUserEntity conferenceUserEntity  = list.get(i);
+            conferenceUserService.save(conferenceUserEntity);
+//            int id=conferenceUserEntity.getId();
+//            if ( conferenceUserService.queryObject(id) ==null ) {
+//                conferenceUserService.save(conferenceUserEntity);
+//            }else {
+//                conferenceUserService.update(conferenceUserEntity);
+//            }
+        }
+        return R.ok();
+    }
+
 }

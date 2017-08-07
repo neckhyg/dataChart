@@ -1,7 +1,9 @@
 package io.renren.controller;
 
 import io.renren.entity.CzitQuestionEntity;
+import io.renren.entity.CzitStudentEntity;
 import io.renren.service.CzitQuestionService;
+import io.renren.service.CzitStudentService;
 import io.renren.utils.PageUtils;
 import io.renren.utils.Query;
 import io.renren.utils.R;
@@ -9,6 +11,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +29,8 @@ import java.util.Map;
 public class CzitQuestionController {
 	@Autowired
 	private CzitQuestionService czitQuestionService;
-	
+    @Autowired
+    private CzitStudentService czitStudentService;
 	/**
 	 * 列表
 	 */
@@ -77,7 +82,25 @@ public class CzitQuestionController {
 		
 		return R.ok();
 	}
-	
+    @ResponseBody
+    @RequestMapping(value = "/save2", method = RequestMethod.POST)
+   // @RequiresPermissions("czitquestion:save")
+    public R save2(String training,String card,String title) throws IOException {
+        CzitQuestionEntity czitQuestion  = new CzitQuestionEntity();
+        czitQuestion.setTrainingId(training);
+        czitQuestion.setQuestionCreatorid(card);
+        czitQuestion.setQuestionTitle(title);
+        czitQuestion.setQuestionCreatetime(new Date());
+
+
+        CzitStudentEntity czitStudent = czitStudentService.queryObjectByidCard(card);
+        czitQuestion.setQuestionCreatorcompany(czitStudent.getStudentCompany());
+        czitQuestion.setQuestionCreatorname(czitStudent.getStudentName());
+
+        czitQuestionService.save(czitQuestion);
+
+        return R.ok();
+    }
 	/**
 	 * 修改
 	 */

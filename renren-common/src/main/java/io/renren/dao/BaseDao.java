@@ -39,4 +39,6 @@ public interface BaseDao<T> {
 	int queryTotal();
 
     T queryObjectByCode(String code);
+
+    T queryObjectBySql(String SqlStr);
 }

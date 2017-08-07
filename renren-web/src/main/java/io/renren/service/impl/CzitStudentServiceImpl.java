@@ -24,7 +24,12 @@ public class CzitStudentServiceImpl implements CzitStudentService {
 	public CzitStudentEntity queryObject(Integer id){
 		return czitStudentDao.queryObject(id);
 	}
-	
+    @Override
+    public CzitStudentEntity queryObjectByidCard(String  idCard){
+
+//          String sqlStr  =  " where Student_IDCard = \'" +idCard+"\'"  ;
+        return czitStudentDao.queryObjectBySql(idCard);
+    }
 	@Override
 	public List<CzitStudentEntity> queryList(Map<String, Object> map){
 //        List<CzitStudentEntity> list =  czitStudentDao.queryList(map);
@@ -52,7 +57,7 @@ public class CzitStudentServiceImpl implements CzitStudentService {
 	public void save(CzitStudentEntity czitStudent){
 		czitStudentDao.save(czitStudent);
 	}
-	
+
 	@Override
 	public void update(CzitStudentEntity czitStudent){
 		czitStudentDao.update(czitStudent);
