@@ -83,5 +83,7 @@
 			#{id}
 		</foreach>
 	</delete>
-
+    <select id="queryObjectBySql" resultType="io.renren.entity.ConferenceUserEntity">
+		select * from conference_user where user_id = #{value}
+	</select>
 </mapper>

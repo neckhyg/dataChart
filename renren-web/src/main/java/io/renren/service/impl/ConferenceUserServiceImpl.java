@@ -49,5 +49,9 @@ public class ConferenceUserServiceImpl implements ConferenceUserService {
 	public void deleteBatch(Integer[] ids){
 		conferenceUserDao.deleteBatch(ids);
 	}
-	
+
+    @Override
+    public ConferenceUserEntity queryObjectByUserId(String userId){
+        return conferenceUserDao.queryObjectBySql(userId);
+    }
 }

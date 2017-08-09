@@ -48,6 +48,31 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+
+    new AjaxUpload('#upload', {
+        action: '../sys/conference/upload',
+        name: 'file',
+        autoSubmit:true,
+        responseType:"json",
+        onSubmit:function(file, extension){
+            if(vm.config.type == null){
+                alert("云存储配置未配置");
+                return false;
+            }
+            if (!(extension && /^(xls|xlsx)$/.test(extension.toLowerCase()))){
+                alert('只支持excel文件格式！');
+                return false;
+            }
+        },
+        onComplete : function(file, r){
+            if(r.code == 0){
+                alert(r.msg);
+//                vm.reload();
+            }else{
+                alert(r.msg);
+            }
+        }
+    });
 });
 
 var vm = new Vue({
@@ -56,12 +81,25 @@ var vm = new Vue({
         showpay: false,
 		showList: true,
 		title: null,
-		conferenceUser: {}
+		conferenceUser: {},
+        config: {}
 	},
+    created: function(){
+        this.getConfig();
+    },
 	methods: {
 		query: function () {
 			vm.reload();
 		},
+        getConfig: function () {
+            $.getJSON("../sys/oss/config", function(r){
+                vm.config = r.config;
+            });
+        },
+        addConfig: function(){
+            vm.showList = false;
+            vm.title = "云存储配置";
+        },
 		add: function(){
 			vm.showList = false;
             vm.showpay= false;
@@ -105,7 +143,7 @@ var vm = new Vue({
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",
-				    url: "../conferenceuser/delete",
+				    url: "../sys/conference/delete",
 				    data: JSON.stringify(ids),
 				    success: function(r){
 						if(r.code == 0){

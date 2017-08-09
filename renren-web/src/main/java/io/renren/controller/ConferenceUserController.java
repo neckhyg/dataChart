@@ -1,22 +1,23 @@
 package io.renren.controller;
 
 import io.renren.entity.ConferenceUserEntity;
+import io.renren.entity.SysOssEntity;
 import io.renren.entity.SysUserEntity;
+import io.renren.oss.OSSFactory;
 import io.renren.service.ConferenceUserService;
 import io.renren.service.SysUserService;
 import io.renren.utils.ExcelUtil;
 import io.renren.utils.PageUtils;
 import io.renren.utils.R;
+import io.renren.utils.RRException;
 import io.renren.utils.ShiroUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import simplemail.Mail;
 import simplemail.MailUtil;
 
@@ -24,10 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //import java.text.SimpleDateFormat;
 //import java.util.Calendar;
@@ -550,15 +548,75 @@ public class ConferenceUserController {
         for(int i=0;i<list.size();i++){
 
             ConferenceUserEntity conferenceUserEntity  = list.get(i);
-            conferenceUserService.save(conferenceUserEntity);
-//            int id=conferenceUserEntity.getId();
-//            if ( conferenceUserService.queryObject(id) ==null ) {
-//                conferenceUserService.save(conferenceUserEntity);
-//            }else {
-//                conferenceUserService.update(conferenceUserEntity);
-//            }
+//            conferenceUserService.save(conferenceUserEntity);
+          String UserId=conferenceUserEntity.getUserId();
+            if ( conferenceUserService.queryObjectByUserId(UserId) ==null ) {
+                conferenceUserService.save(conferenceUserEntity);
+            }else {
+                conferenceUserService.update(conferenceUserEntity);
+            }
         }
         return R.ok();
+    }
+    /**
+     * 上传文件
+     */
+    @ResponseBody
+    @RequestMapping("/upload")
+    @RequiresPermissions("sys:conference:upload")
+    public R upload(@RequestParam("file") MultipartFile file) throws Exception {
+        if (file.isEmpty()) {
+            throw new RRException("上传文件不能为空");
+        }
+       String  path =    "./upload/";
+//        String path = servletContext.getRealPath("/");
+        String fileName = "ex"  + file.getOriginalFilename();
+
+        if(file.getSize()>0){
+            try {
+                SaveFileFromInputStream(file.getInputStream(),"f:/temp",fileName);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+//                return null;
+                return R.error("上传文件出现异常!");
+            }
+        }
+        else{
+//            throw new Exception("上传失败：上传文件不能为空");
+            return R.error("上传失败：上传文件不能为空!");
+        }
+//        File newfile = new File(fileName);
+//        file.transferTo(newfile);
+//
+//        System.out.println("方式一文件名："+fileName);
+//        System.out.println("方式一文件路径："+newfile.getPath());
+//        System.out.println("方式一文件后缀名："+FilenameUtils.getExtension(file.getOriginalFilename()));
+        //上传文件
+//        String url = OSSFactory.build().upload(file.getBytes());
+
+        //保存文件信息
+//        SysOssEntity ossEntity = new SysOssEntity();
+//        ossEntity.setUrl(url);
+//        ossEntity.setCreateDate(new Date());
+//        sysOssService.save(ossEntity);
+
+//        return R.ok().put("url", url);
+        return R.ok("上传成功！");
+    }
+    public void SaveFileFromInputStream(InputStream stream,String path,String filename) throws IOException
+    {
+        FileOutputStream fs=new FileOutputStream( path + "/"+ filename);
+        byte[] buffer =new byte[1024*1024];
+        int bytesum = 0;
+        int byteread = 0;
+        while ((byteread=stream.read(buffer))!=-1)
+        {
+            bytesum+=byteread;
+            fs.write(buffer,0,byteread);
+            fs.flush();
+        }
+        fs.close();
+        stream.close();
     }
 
 }

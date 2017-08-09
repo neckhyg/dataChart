@@ -27,4 +27,6 @@ public interface ConferenceUserService {
 	void delete(Integer id);
 	
 	void deleteBatch(Integer[] ids);
+
+    ConferenceUserEntity queryObjectByUserId(String userId);
 }

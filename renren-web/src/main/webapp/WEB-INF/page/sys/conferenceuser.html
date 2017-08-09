@@ -25,7 +25,7 @@
 </script>
 -->
 #parse("sys/header.html")
-
+<script src="${rc.contextPath}/statics/libs/ajaxupload.js"></script>
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -51,9 +51,10 @@
         #if($shiro.hasPermission("sys:conference:export"))
         <a class="btn btn-primary" @click="exportexcel"><i class="fa fa-pencil-square-o"></i>&nbsp;导出Excel</a>
         #end
-            #if($shiro.hasPermission("sys:conference:import"))
+         #if($shiro.hasPermission("sys:conference:import"))
             <a class="btn btn-primary" @click="excel2db"><i class="fa fa-pencil-square-o"></i>&nbsp;导入Excel</a>
-            #end
+         #end
+            <a class="btn btn-primary" id="upload"><i class="fa fa-plus"></i>&nbsp;上传文件</a>
     </div>
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
