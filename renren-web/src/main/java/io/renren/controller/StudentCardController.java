@@ -192,7 +192,7 @@ public class StudentCardController {
     @RequiresPermissions("studentcard:import")
     public R importExcel2Db()    throws IOException {
 //        List temp = new ArrayList();
-        String   filename  = "F:\\temp\\excel2db.xls"  ;
+        String   filename  = "F:\\temp\\student_tiyu.xls"  ;
         List<StudentCardEntity> list =new ArrayList<StudentCardEntity>();
         try{
             File file=new File(filename);

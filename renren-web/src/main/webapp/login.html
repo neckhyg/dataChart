@@ -107,14 +107,14 @@ var vm = new Vue({
 			    data: data,
 			    dataType: "json",
 			    success: function(result){
-//					if(result.code == 0){//登录成功
-//						parent.location.href ='index.html';
-//					}
-                    if(result.msg == "admin"){//登录成功
-                        parent.location.href ='index.html';
-                    }  else if(result.msg == "user"){
-                        parent.location.href ='meeting/trainingReg.html';
-                    }
+					if(result.code == 0){//登录成功
+						parent.location.href ='index.html';
+					}
+//                    if(result.msg == "admin"){//登录成功
+//                        parent.location.href ='index.html';
+//                    }  else if(result.msg == "user"){
+//                        parent.location.href ='meeting/trainingReg.html';
+//                    }
                     else{
 						vm.error = true;
 						vm.errorMsg = result.msg;
