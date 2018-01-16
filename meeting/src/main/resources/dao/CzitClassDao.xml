@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.CzitClassDao">
+
+    <resultMap type="io.renren.entity.CzitClassEntity" id="czitClassMap">
+        <result property="id" column="id"/>
+        <result property="trainingCode" column="Training_Code"/>
+        <result property="trainingName" column="Training_Name"/>
+        <result property="trainingPersonquantity" column="Training_PersonQuantity"/>
+        <result property="trainingPrice" column="Training_Price"/>
+        <result property="trainingRegisterstarttime" column="Training_RegisterStartTime"/>
+        <result property="trainingStartdate" column="Training_StartDate"/>
+        <result property="trainingId" column="Training_Id"/>
+        <result property="trainingStudenttype" column="Training_StudentType"/>
+        <result property="trainingStationlist" column="Training_StationList"/>
+        <result property="trainingIsshowstation" column="Training_IsShowStation"/>
+        <result property="trainingPaperurl" column="Training_PaperURL"/>
+        <result property="attendanceId" column="Attendance_Id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.CzitClassEntity">
+		select * from czit_class where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.CzitClassEntity">
+		select * from czit_class
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from czit_class 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.CzitClassEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into czit_class
+		(
+			`Training_Code`, 
+			`Training_Name`, 
+			`Training_PersonQuantity`, 
+			`Training_Price`, 
+			`Training_RegisterStartTime`, 
+			`Training_StartDate`, 
+			`Training_Id`, 
+			`Training_StudentType`, 
+			`Training_StationList`, 
+			`Training_IsShowStation`, 
+			`Training_PaperURL`, 
+			`Attendance_Id`
+		)
+		values
+		(
+			#{trainingCode}, 
+			#{trainingName}, 
+			#{trainingPersonquantity}, 
+			#{trainingPrice}, 
+			#{trainingRegisterstarttime}, 
+			#{trainingStartdate}, 
+			#{trainingId}, 
+			#{trainingStudenttype}, 
+			#{trainingStationlist}, 
+			#{trainingIsshowstation}, 
+			#{trainingPaperurl}, 
+			#{attendanceId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.CzitClassEntity">
+		update czit_class 
+		<set>
+			<if test="trainingCode != null">`Training_Code` = #{trainingCode}, </if>
+			<if test="trainingName != null">`Training_Name` = #{trainingName}, </if>
+			<if test="trainingPersonquantity != null">`Training_PersonQuantity` = #{trainingPersonquantity}, </if>
+			<if test="trainingPrice != null">`Training_Price` = #{trainingPrice}, </if>
+			<if test="trainingRegisterstarttime != null">`Training_RegisterStartTime` = #{trainingRegisterstarttime}, </if>
+			<if test="trainingStartdate != null">`Training_StartDate` = #{trainingStartdate}, </if>
+			<if test="trainingId != null">`Training_Id` = #{trainingId}, </if>
+			<if test="trainingStudenttype != null">`Training_StudentType` = #{trainingStudenttype}, </if>
+			<if test="trainingStationlist != null">`Training_StationList` = #{trainingStationlist}, </if>
+			<if test="trainingIsshowstation != null">`Training_IsShowStation` = #{trainingIsshowstation}, </if>
+			<if test="trainingPaperurl != null">`Training_PaperURL` = #{trainingPaperurl}, </if>
+			<if test="attendanceId != null">`Attendance_Id` = #{attendanceId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from czit_class where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from czit_class where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

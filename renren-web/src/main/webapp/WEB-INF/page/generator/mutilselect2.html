@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>select标签multiple属性的使用方法</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript">
+
+        /**
+         * @param fromSelectId option移动起始select标签id
+         * @param toSelectId option移动目的地select标签id
+         * @param addOrNot boolean类型——true表示当前进行的是添加操作，否则是删除操作
+         * @param moveAllOrNot boolean类型——true表示当前进行的是“全部”操作，否则当前进行的不是“全部”操作
+         */
+        function moveOptions(fromSelectId, toSelectId, addOrNot, moveAllOrNot){
+            var fromObject = document.getElementById(fromSelectId);
+            var toObject = document.getElementById(toSelectId);
+            if(fromObject.options.length == 0){
+                if(addOrNot){
+                    alert("没有找到可添加的选项！");
+                }else{
+                    alert("没有找到可删除的选项！");
+                }
+                return;
+            }
+
+            if(fromObject.selectedIndex == -1 && moveAllOrNot == false){
+                if(addOrNot){
+                    alert("请先选择要添加的选项！");
+                }else{
+                    alert("请先选择要删除的选项！");
+                }
+                return;
+            }
+
+            var toSelectOptionsList = new Array(toObject.options.length);//存放option移动目的地select标签所有option选项
+            var toSelectOptionPointer = 0;
+            for(; toSelectOptionPointer < toObject.options.length; toSelectOptionPointer ++){//将option移动目的地原有option选项存放到toSelectOptionsList数组中
+                if(toObject.options[toSelectOptionPointer] != null){
+                    toSelectOptionsList[toSelectOptionPointer] = new Option(toObject.options[toSelectOptionPointer].text, toObject.options[toSelectOptionPointer].value);
+                }
+            }
+
+            for(var i = 0; i < fromObject.options.length; i ++){
+                if(fromObject.options[i] != null && (fromObject.options[i].selected == true || moveAllOrNot)){//将新添加的option选项存放到toSelectOptionsList数组中
+                    toSelectOptionsList[toSelectOptionPointer] = new Option(fromObject.options[i].text, fromObject.options[i].value);
+                    toSelectOptionsList[toSelectOptionPointer].title = fromObject.options[i].text;
+                    toSelectOptionPointer ++;
+                }
+            }
+
+            for(var i = 0; i < toSelectOptionsList.length; i ++){//重新整合option移动目的地select标签的option选项，以使新添加的显示出来
+                if(toSelectOptionsList[ i ] != null){
+                    toObject.options[ i ] = toSelectOptionsList[ i ];
+                }
+            }
+
+            for(var i = fromObject.options.length - 1; i >= 0; i --){//重新整合option移动起始select标签的option选项，以便去掉删除的option选项
+                if(fromObject.options[i] != null && (fromObject.options[i].selected == true || moveAllOrNot)){
+                    fromObject.options[i] = null;
+                }
+            }
+        }
+
+        function getSelectedValues(){
+            var selectedValues = "";
+            var rightSelectObject = document.getElementById("rightSelect");
+            for(var i=0; i<rightSelectObject.options.length; i++){
+                selectedValues = rightSelectObject.options[i].value + ',' + selectedValues;
+            }
+            selectedValues = selectedValues.substring(0, selectedValues.lastIndexOf(','));
+            if(selectedValues == ""){
+                alert("你没有选择任何选项！！！");
+            }else{
+                alert("你选中的值为：" + selectedValues);
+            }
+        }
+    </script>
+</head>
+
+<body>
+<center style="margin-top:12%"><font color="red" size="5"><b>select标签multiple属性的使用方法</b></font></center>
+<br/>
+<table border="1" cellspacing="0" align="center">
+    <tr>
+        <td align="center" width="150px">未选择</td>
+        <td align="center" width="150px">操作</td>
+        <td align="center" width="150px">已选择</td>
+    </tr>
+    <tr>
+        <td align="center" width="150px">
+            <select id="leftSelect" name="leftSelect" multiple="multiple" size="15" style="width:100%; height:100%;">
+                <option value="0fc09295-ed4d-4e79-9c11-2f0913b421a6" title="沙枣">沙枣</option>
+                <option value="1cb5eccc-faa3-44df-ba62-bb5fcdf29036" title="脐橙">脐橙</option>
+                <option value="26e545ae-3647-45aa-8b9f-cef6a8d8c454" title="芒果">芒果</option>
+                <option value="2788bd4d-53c2-4571-a562-b8c47e058ff4" title="枇杷">枇杷</option>
+                <option value="2ab7393a-7478-4451-bb63-e8a91dc63adb" title="金桔">金桔</option>
+                <option value="51160f28-44ab-419d-948c-16ba1370613a" title="青梅">青梅</option>
+                <option value="baa4df9c-e6f9-4d4d-bfb8-648394942170" title="毛桃">毛桃</option>
+                <option value="43a0912c-ba1b-4700-8616-31f701098b0a" title="酸橙">酸橙</option>
+                <option value="37a76cf1-0b11-411a-8ce3-bb37383951c4" title="海棠">海棠</option>
+                <option value="78a49dc8-3920-47ff-9a3e-b6e31d337d67" title="槟榔">槟榔</option>
+                <option value="26852cb9-3cde-4b50-bf52-0ad838822665" title="杨桃">杨桃</option>
+                <option value="a52b4681-2c1b-4520-ab8a-6507b52c2105" title="樱桃">樱桃</option>
+                <option value="8d3d65f7-5252-4f47-9c9a-960367b06ba7" title="芭乐">芭乐</option>
+                <option value="7b361600-7c77-44a5-8e03-c043ebddc710" title="鳄梨">鳄梨</option>
+                <option value="5c2f062b-3fd2-44c1-a8e2-0546454978d9" title="西柚">西柚</option>
+            </select>
+        </td>
+        <td align="center" width="150px">
+            <input type="button" onclick="moveOptions('leftSelect', 'rightSelect', true, false);" value="添加 >>" style="text-align:center; margin-bottom:10px; width:90px;"/>
+            <br/>
+            <input type="button" onclick="moveOptions('rightSelect', 'leftSelect', false, false);" value="删除 <<" style="text-align:center; margin-bottom:10px; width:90px;"/>
+            <br/>
+            <input type="button" onclick="moveOptions('leftSelect', 'rightSelect', true, true);" value="全部添加 >>" style="margin-bottom:10px; width:90px;"/>
+            <br/>
+            <input type="button" onclick="moveOptions('rightSelect', 'leftSelect', false, true);" value="全部删除 <<" style="margin-bottom:10px; width:90px;"/>
+            <br/>
+        </td>
+        <td align="center" width="150px">
+            <select id="rightSelect" name="rightSelect" multiple="multiple" size="15" style="width:100%; height:100%;">
+                <option value="07c9907f-bfb1-4e37-98e6-02224834ef76" title="荸荠">荸荠</option>
+                <option value="4e1c083f-c988-48b9-9a48-ff7dbe07e51f" title="胡桃">胡桃</option>
+                <option value="0e685a36-ddd1-4288-b741-8624e4384b58" title="杨梅">杨梅</option>
+            </select>
+        </td>
+    </tr>
+</table>
+<br/>
+<center><input type="button" value="获取选项的value值" onclick="getSelectedValues();"/></center>
+</body>
+</html>

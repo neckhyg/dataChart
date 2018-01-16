@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.ZfXsxxjbbDao">
+
+    <resultMap type="io.renren.entity.ZfXsxxjbbEntity" id="zfXsxxjbbMap">
+        <result property="xh" column="xh"/>
+        <result property="xm" column="xm"/>
+        <result property="xb" column="xb"/>
+        <result property="xy" column="xy"/>
+        <result property="zymc" column="zymc"/>
+        <result property="xzb" column="xzb"/>
+        <result property="xz" column="xz"/>
+        <result property="xjzt" column="xjzt"/>
+        <result property="dqszj" column="dqszj"/>
+        <result property="sfzh" column="sfzh"/>
+        <result property="zydm" column="zydm"/>
+        <result property="sfzx" column="sfzx"/>
+        <result property="sfzc" column="sfzc"/>
+        <result property="ssxydm" column="ssxydm"/>
+        <result property="bjdm" column="bjdm"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.ZfXsxxjbbEntity">
+		select * from zf_xsxxjbb where xh = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.ZfXsxxjbbEntity">
+		select * from zf_xsxxjbb
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by xh desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from zf_xsxxjbb 
+	</select>
+    <select id="queryStudentChartList" resultType="io.renren.entity.ZfstudentchartEntity">
+		select ssxydm as departmentCode ,count(*)  as  departmentNum  from zf_xsxxjbb  group by   ssxydm
+	</select>
+
+	<insert id="save" parameterType="io.renren.entity.ZfXsxxjbbEntity">
+		insert into zf_xsxxjbb
+		(
+			`xh`, 
+			`xm`, 
+			`xb`, 
+			`xy`, 
+			`zymc`, 
+			`xzb`, 
+			`xz`, 
+			`xjzt`, 
+			`dqszj`, 
+			`sfzh`, 
+			`zydm`, 
+			`sfzx`, 
+			`sfzc`, 
+			`ssxydm`, 
+			`bjdm`
+		)
+		values
+		(
+			#{xh}, 
+			#{xm}, 
+			#{xb}, 
+			#{xy}, 
+			#{zymc}, 
+			#{xzb}, 
+			#{xz}, 
+			#{xjzt}, 
+			#{dqszj}, 
+			#{sfzh}, 
+			#{zydm}, 
+			#{sfzx}, 
+			#{sfzc}, 
+			#{ssxydm}, 
+			#{bjdm}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.ZfXsxxjbbEntity">
+		update zf_xsxxjbb 
+		<set>
+			<if test="xm != null">`xm` = #{xm}, </if>
+			<if test="xb != null">`xb` = #{xb}, </if>
+			<if test="xy != null">`xy` = #{xy}, </if>
+			<if test="zymc != null">`zymc` = #{zymc}, </if>
+			<if test="xzb != null">`xzb` = #{xzb}, </if>
+			<if test="xz != null">`xz` = #{xz}, </if>
+			<if test="xjzt != null">`xjzt` = #{xjzt}, </if>
+			<if test="dqszj != null">`dqszj` = #{dqszj}, </if>
+			<if test="sfzh != null">`sfzh` = #{sfzh}, </if>
+			<if test="zydm != null">`zydm` = #{zydm}, </if>
+			<if test="sfzx != null">`sfzx` = #{sfzx}, </if>
+			<if test="sfzc != null">`sfzc` = #{sfzc}, </if>
+			<if test="ssxydm != null">`ssxydm` = #{ssxydm}, </if>
+			<if test="bjdm != null">`bjdm` = #{bjdm}</if>
+		</set>
+		where xh = #{xh}
+	</update>
+	
+	<delete id="delete">
+		delete from zf_xsxxjbb where xh = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from zf_xsxxjbb where xh in 
+		<foreach item="xh" collection="array" open="(" separator="," close=")">
+			#{xh}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -5,6 +5,7 @@ import io.renren.entity.SysOssEntity;
 import io.renren.entity.SysUserEntity;
 import io.renren.oss.OSSFactory;
 import io.renren.service.ConferenceUserService;
+import io.renren.service.SysOssService;
 import io.renren.service.SysUserService;
 import io.renren.utils.ExcelUtil;
 import io.renren.utils.PageUtils;
@@ -51,6 +52,9 @@ public class ConferenceUserController {
     private HttpServletResponse response;
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private SysOssService sysOssService;
 
 //    HttpServletResponse response = ((ServletWebRequest)RequestContextHolder.getRequestAttributes()).getResponse();
 //    HttpServletResponse response = ServletActionContext.getResponse();
@@ -568,13 +572,13 @@ public class ConferenceUserController {
         if (file.isEmpty()) {
             throw new RRException("上传文件不能为空");
         }
-       String  path =    "./upload/";
+       String  path =    "f:/temp";
 //        String path = servletContext.getRealPath("/");
         String fileName = "ex"  + file.getOriginalFilename();
 
         if(file.getSize()>0){
             try {
-                SaveFileFromInputStream(file.getInputStream(),"f:/temp",fileName);
+                SaveFileFromInputStream(file.getInputStream(),path,fileName);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
 //                return null;
@@ -585,20 +589,14 @@ public class ConferenceUserController {
 //            throw new Exception("上传失败：上传文件不能为空");
             return R.error("上传失败：上传文件不能为空!");
         }
-//        File newfile = new File(fileName);
-//        file.transferTo(newfile);
-//
-//        System.out.println("方式一文件名："+fileName);
-//        System.out.println("方式一文件路径："+newfile.getPath());
-//        System.out.println("方式一文件后缀名："+FilenameUtils.getExtension(file.getOriginalFilename()));
-        //上传文件
-//        String url = OSSFactory.build().upload(file.getBytes());
 
+//        String url = OSSFactory.build().upload(file.getBytes());
+        String newFile =     path + "/"+ fileName  ;
         //保存文件信息
-//        SysOssEntity ossEntity = new SysOssEntity();
-//        ossEntity.setUrl(url);
-//        ossEntity.setCreateDate(new Date());
-//        sysOssService.save(ossEntity);
+        SysOssEntity ossEntity = new SysOssEntity();
+        ossEntity.setUrl(newFile);
+        ossEntity.setCreateDate(new Date());
+        sysOssService.save(ossEntity);
 
 //        return R.ok().put("url", url);
         return R.ok("上传成功！");

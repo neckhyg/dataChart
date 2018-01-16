@@ -41,4 +41,6 @@ public interface BaseDao<T> {
     T queryObjectByCode(String code);
 
     T queryObjectBySql(String SqlStr);
+
+    List<T> queryListByDeptID(String deptID);
 }

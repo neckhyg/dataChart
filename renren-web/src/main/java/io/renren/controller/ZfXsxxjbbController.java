@@ -56,7 +56,7 @@ public class ZfXsxxjbbController {
      */
     @ResponseBody
     @RequestMapping("/count")
-    @RequiresPermissions("zfxsxxjbb:count")
+   // @RequiresPermissions("zfxsxxjbb:count")
     public R count(@RequestParam Map<String, Object> params){
         //查询total数据
 //        Query query = new Query(params);

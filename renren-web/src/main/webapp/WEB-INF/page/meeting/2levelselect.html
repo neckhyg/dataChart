@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>vue.js级联</title>
+    <script src="${rc.contextPath}/statics/libs/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <level-select @lsnselect="fire" v-bind:select-default='defaultData()'></level-select>
+</div>
+<!--
+        作者：engineer_van
+        时间：2017-05-19
+        描述：
+        fire：设置监听
+        defaultData方法返回：
+        1.json：一个包含所有分类级别的对象数组，id必须是唯一的，结构是：[{"id":1,"name":"名称","child":[{"id":11,"name":"名称","child":[{"id":111,"name":"名称"}]},……]
+        2.默认数据：[{key:"值为0时默认显示文本",subDataJson:"该分类层的json数据",value:"默认选中值"},……]
+        -->
+<script>
+    Vue.component('level-select',{
+        props:['select-default'],
+        data:function(){
+
+            return{
+
+                selectList:this.selectDefault,
+            }
+
+        },
+        template:'<div>\
+<select @change="lsnselect(index)" v-bind:id="\'level\'+index" v-model="s.value"  v-for="s,index in selectList">\
+<option value="0">{{s.key}}</option>\
+<option v-for="t in s.subDataJson" :value="t.id">{{t.name}}</option>\
+</select>\
+</div>',
+        methods:{
+            getSonJson:function(parentId,index){
+                var items=this.selectList[index].subDataJson;
+                var len=items.length;
+                if(len<1)return;
+                for(var i=0; i<len; i++){
+                    if(items[i].id==parentId&&items[i].child.length>0){
+                        return items[i].child;
+                    }
+
+                }
+                return [];
+
+            },
+            lsnselect:function(index){
+                var len=this.selectList.length;
+                for(i=index;i<len-1;i++){
+                    var newVal=this.selectList[i].value;
+                    if(i<len-1){
+                        this.selectList[i+1].subDataJson=this.getSonJson(newVal,i)
+                    }
+
+                    this.selectList[i+1].value=0;//只要值改变了，下一级就必然要回到默认值
+                }
+                var current_value=this.selectList[index].value;
+                this.$emit("lsnselect",{index:index,value:current_value});//触发监听事件
+            },
+        },
+        created:function(){//创建时加载默认json
+            var len=this.selectList.length;
+            for(var i=0;i<len-1;i++){
+                if(i<len-1){
+                    this.selectList[i+1].subDataJson=this.getSonJson(this.selectList[i].value,i);
+                }
+            }
+        }
+
+    })
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            ljson:[
+                {"id":1,"name":"广东","child":[{"id":11,"name":"深圳","child":[{"id":111,"name":"罗湖"}]},{"id":12,"name":"广州","child":[{"id":213,"name":"天河"}]}]},
+                {"id":2,"name":"猴子","child":[{"id":21,"name":"六耳猕猴","child":[{"id":251,"name":"猴子猴孙"}]},{"id":22,"name":"孙悟空他老子","child":[{"id":221,"name":"孙悟空"}]}]}
+            ]
+        },
+        methods:{
+            defaultData:function(){//初始化数据，把数据放到data时，在数组内部用this.ljson他娘的找不到数据，数组里面用this不是指向实例吗？
+                var json=this.ljson;
+                return [
+                    {key:"请选择省",subDataJson:json,value:2},
+                    {key:"请选择市",subDataJson:"",value:22},
+                    {key:"请选择区",subDataJson:"",value:221}
+                ]
+            },
+            fire:function(msg){//设置监听返回{index:当前索引值,value:当前选中值}
+                console.log(msg)
+            },
+        }
+    });
+
+
+
+</script>
+</body>
+</html>

@@ -9,7 +9,8 @@ $(function () {
 			{ label: '报名人数', name: 'trainingPersonquantity', index: 'Training_PersonQuantity', width: 80 },
 			{ label: '报名费', name: 'trainingPrice', index: 'Training_Price', width: 80 },
 			{ label: '报名时间', name: 'trainingRegisterstarttime', index: 'Training_RegisterStartTime', width: 80 },
-			{ label: '上课时间', name: 'trainingStartdate', index: 'Training_StartDate', width: 80 }
+			{ label: '上课时间', name: 'trainingStartdate', index: 'Training_StartDate', width: 80 },
+            {label: '新增',name:'ViewDetail',index:'detail', width:50,align:"center"}
             //,
 		//	{ label: '', name: 'trainingId', index: 'Training_Id', width: 80 },
 		//	{ label: '', name: 'trainingStudenttype', index: 'Training_StudentType', width: 80 },
@@ -40,11 +41,26 @@ $(function () {
         },
         gridComplete:function(){
         	//隐藏grid底部滚动条
-        	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+            var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+
+            for ( var i = 0; i < ids.length; i++) {
+
+                var id = ids[i];
+
+                detail ="<a href='#' style='color:#f60' onclick='ViewDetail("+ id +")' >查看详情</a>";
+
+                jQuery("#jqGrid").jqGrid('setRowData', ids[i], { ViewDetail: detail });
+            }
+                $("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
         }
     });
 });
+function ViewDetail(id) {
 
+  //  window.location.href = "view_check_report_detail.action?checkReportId=" + id;
+
+    window.location.href = "http://localhost:8090/meeting/trainingReg.html" ;
+}
 var vm = new Vue({
 	el:'#rrapp',
 	data:{

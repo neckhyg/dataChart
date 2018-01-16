@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.dao.SelectattendanceDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.entity.SelectattendanceEntity" id="selectattendanceMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="deptid" column="deptID"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="io.renren.entity.SelectattendanceEntity">
+		select * from selectattendance where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="io.renren.entity.SelectattendanceEntity">
+		select * from selectattendance
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from selectattendance 
+	</select>
+	 
+	<insert id="save" parameterType="io.renren.entity.SelectattendanceEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into selectattendance
+		(
+			`username`, 
+			`deptID`
+		)
+		values
+		(
+			#{username}, 
+			#{deptid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="io.renren.entity.SelectattendanceEntity">
+		update selectattendance 
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="deptid != null">`deptID` = #{deptid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from selectattendance where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from selectattendance where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+    <select id="queryListByDeptID" parameterType="String" resultType="io.renren.entity.SelectattendanceEntity">
+        select * from selectattendance    where deptID = #{deptid}
+        <!--<choose>-->
+            <!--<when test="sidx != null and sidx.trim() != ''">-->
+                <!--order by ${sidx} ${order}-->
+            <!--</when>-->
+            <!--<otherwise>-->
+                <!--order by id desc-->
+            <!--</otherwise>-->
+        <!--</choose>-->
+        <!--<if test="offset != null and limit != null">-->
+            <!--limit #{offset}, #{limit}-->
+        <!--</if>-->
+    </select>
+</mapper>
