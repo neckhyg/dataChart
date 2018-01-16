@@ -3,7 +3,7 @@ $(function () {
         url: '../studentcard/list',
         datatype: "json",
         colModel: [			
-			{ label: '学号', name: 'stuno', index: 'stuNo', width: 50, key: true },
+			{ label: '学号', name: 'stuno', index: 'stuNo', width: 60, key: true },
 			{ label: '姓名', name: 'stuname', index: 'stuName', width: 80 },
 			{ label: '卡号', name: 'stucardid', index: 'stuCardID', width: 80 },
 			{ label: '院系', name: 'department', index: 'department', width: 80 },

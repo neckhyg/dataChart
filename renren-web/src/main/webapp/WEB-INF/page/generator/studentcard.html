@@ -24,6 +24,9 @@
             #if($shiro.hasPermission("studentcard:export"))
             <a class="btn btn-primary" @click="exportexcel"><i class="fa fa-pencil-square-o"></i>&nbsp;导出Excel</a>
             #end
+            #if($shiro.hasPermission("studentcard:import"))
+            <a class="btn btn-primary" @click="excel2db"><i class="fa fa-pencil-square-o"></i>&nbsp;导入Excel</a>
+            #end
 		</div>
 	    <table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>
